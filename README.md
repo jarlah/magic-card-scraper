@@ -1,6 +1,10 @@
 # magicscraper
 
-FIXME
+Card database must be manually filled by going into repl:
+
+    lein repl
+    (use 'magicscraper.models.db)
+    (populate-cards)
 
 ## Prerequisites
 
