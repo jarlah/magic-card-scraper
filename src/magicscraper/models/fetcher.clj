@@ -13,7 +13,7 @@
 (def raritySelector [:td.rarity html/text])
 (def setSelector [:td.set html/text])
 (def artistSelector [:td.artist html/text])
-(def setSelector [(html/attr-ends :id "setAddText" :name "setAddText") :option html/text])
+(def setDropdownSelector [(html/attr-ends :id "setAddText" :name "setAddText") :option html/text])
 
 (defn fetch-url "Fetches from baseurl" 
 	[query]
@@ -45,4 +45,4 @@
 	(pmap extract-card (html/select (fetch-url (str searchurl query)) [:table.checklist :tr.cardItem])))
 
 (defn select-sets [] 
-	(html/select (fetch-url "") setSelector))
+	(html/select (fetch-url "") setDropdownSelector))

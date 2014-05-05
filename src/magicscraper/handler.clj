@@ -11,7 +11,7 @@
 (defn init []
   (println "magicscraper is starting")
   (if-not (.exists (java.io.File. "./db.sq3"))
-    (db/create-cards-table)))
+    (db/create-tables)))
 
 (defn destroy []
   (println "magicscraper is shutting down"))

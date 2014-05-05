@@ -4,9 +4,12 @@ Card database must be manually filled by going into repl and doing the following
 
     lein repl
     (use 'magicscraper.repl)
-    (start-server) ;; initiates db
+    (start-server)
     (use 'magicscraper.models.db)
+    (populate-sets)
     (populate-cards)
+
+This will fill in card details for Theros, Born of the gods and Journey into nyx.
 
 ## Prerequisites
 

@@ -59,6 +59,7 @@
 			[name cardid color cardset rarity artist])))
 
 (defn populate-cards []
+	(println "Populating cards")
 	(for [card (fetcher/select-cards)]
 		(save-card 
 			(get card :name) 
@@ -69,9 +70,11 @@
 			(get card :artist))))
 
 (defn populate-sets []
+	(println "Populating sets")
 	(for [set (fetcher/select-sets)]
 		(save-set set "")))
 
-(defn populate-database []
-	(populate-sets)
-	(populate-cards))
+(defn create-tables []
+	(println "Database does not exist. Creating tables.")
+	(create-sets-table)
+	(create-cards-table))
