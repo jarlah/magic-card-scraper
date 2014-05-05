@@ -24,5 +24,3 @@
   (-> (routes home-routes app-routes)
       (handler/site)
       (wrap-base-url)))
-
-

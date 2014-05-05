@@ -13,15 +13,34 @@
 	(sql/with-connection
 		db
 		(sql/with-query-results res
-			["SELECT * FROM magicscraper"]
+			["SELECT * FROM cards"]
 			(doall res))))
 
-(defn create-cards-table []
-	(println "Creating table")
+(defn create-sets-table []
+	(println "Creating sets table")
 	(sql/with-connection
 		db
 		(sql/create-table
-			:magicscraper
+			:sets
+			[:id "INTEGER PRIMARY KEY AUTOINCREMENT"]
+			[:name "TEXT"]
+			[:description "TEXT"])))
+
+(defn save-set [name description]
+	(println (str "Saving set " name))
+	(sql/with-connection
+		db
+		(sql/insert-values
+			:sets
+			[:name :description]
+			[name description])))
+
+(defn create-cards-table []
+	(println "Creating cards table")
+	(sql/with-connection
+		db
+		(sql/create-table
+			:cards
 			[:id "INTEGER PRIMARY KEY AUTOINCREMENT"]
 			[:name "TEXT"]
 			[:cardid "TEXT"]
@@ -31,10 +50,11 @@
 			[:artist "TEXT"])))
 
 (defn save-card [name cardid color cardset rarity artist]
+	(println (str "Saving card " name))
 	(sql/with-connection
 		db
 		(sql/insert-values
-			:magicscraper
+			:cards
 			[:name :cardid :color :cardset :rarity :artist]
 			[name cardid color cardset rarity artist])))
 
@@ -47,3 +67,11 @@
 			(get card :set) 
 			(get card :rarity)
 			(get card :artist))))
+
+(defn populate-sets []
+	(for [set (fetcher/select-sets)]
+		(save-set set "")))
+
+(defn populate-database []
+	(populate-sets)
+	(populate-cards))

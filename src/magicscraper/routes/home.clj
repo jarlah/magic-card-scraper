@@ -7,7 +7,7 @@
 
 (defn home []
   (layout/common 
-  	[:h1 "Simple magic database"]
+  	[:h1 "Magic Card Database"]
   	(cards/show-cards (db/read-cards))))
 
 (defn card [id]

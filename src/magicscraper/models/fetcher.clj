@@ -2,7 +2,8 @@
 	(:require [net.cgrand.enlive-html :as html]))
 
 ;; the basic stuff needed
-(def baseurl "http://gatherer.wizards.com/Pages/Search/Default.aspx?output=checklist&action=advanced&set=")
+(def baseurl "http://gatherer.wizards.com/Pages/")
+(def searchurl "Search/Default.aspx?output=checklist&action=advanced&set=")
 (def query "|[\"Theros\"]|[\"Journey+into+Nyx\"]|[\"Born+of+the+Gods\"]")
 
 ;; equivalent to jquery selectors
@@ -12,8 +13,9 @@
 (def raritySelector [:td.rarity html/text])
 (def setSelector [:td.set html/text])
 (def artistSelector [:td.artist html/text])
+(def setSelector [(html/attr-ends :id "setAddText" :name "setAddText") :option html/text])
 
-(defn fetch-sets "Fetches the sets, provided by the query parameter, from gatherer" 
+(defn fetch-url "Fetches from baseurl" 
 	[query]
 	(html/html-resource (java.net.URL. (str baseurl query))))
 
@@ -40,4 +42,7 @@
 
 (defn select-cards "Simpply fetches the search result and selects the card" 
 	[] 
-	(pmap extract-card (html/select (fetch-sets query) [:table.checklist :tr.cardItem])))
+	(pmap extract-card (html/select (fetch-url (str searchurl query)) [:table.checklist :tr.cardItem])))
+
+(defn select-sets [] 
+	(html/select (fetch-url "") setSelector))

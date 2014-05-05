@@ -2,10 +2,11 @@
   (:require [hiccup.form :refer :all]))
 
 (defn show-cards [cards]
-	[:ul.checklist
+	[:div.checklist
 	(for [{:keys [id name cardid color cardset rarity artist]} cards]
-		[:li
-			[:a {:href (str "card/" cardid)} name]
+		[:div.card
+			[:img {:src (str "img/" cardid ".jpg") :width "200px" :height "284px"}]
+			[:a {:href (str "card/" cardid)} [:span name]]
 			[:p color]
 			[:p cardset]
 			[:p rarity]
