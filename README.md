@@ -1,19 +1,6 @@
-# magicscraper
-
-Card database must be manually filled by going into repl and doing the following:
-
-    lein repl
-    (use 'magicscraper.repl)
-    (start-server)
-    (use 'magicscraper.models.db)
-    (populate-sets)
-    (populate-cards)
-
-This will fill in card details for Theros, Born of the gods and Journey into nyx.
-
 # TODOS
 
-The sets table is not currently used. I have hard coded the card population on the three above mentioned sets. 
+The sets table is not currently used. I have hard coded the card population on the Theros block. 
 I am next going to populate cards within all the sets that is currently searchable on wizards.com. 
 This will produce some identical card names in different sets, 
 but I plan to create a view or search feature where each card name is only displayed once 
