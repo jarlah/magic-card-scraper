@@ -16,6 +16,13 @@
 			["SELECT * FROM cards"]
 			(doall res))))
 
+(defn read-sets []
+	(sql/with-connection
+		db
+		(sql/with-query-results res
+			["SELECT * FROM sets"]
+			(doall res))))
+
 (defn create-sets-table []
 	(println "Creating sets table")
 	(sql/with-connection
@@ -60,14 +67,15 @@
 
 (defn populate-cards []
 	(println "Populating cards")
-	(doall (for [card (fetcher/select-cards)]
-		(save-card 
-			(get card :name) 
-			(get card :id) 
-			(get card :color) 
-			(get card :set) 
-			(get card :rarity)
-			(get card :artist)))))
+	(doall (for [set (fetcher/select-sets)]
+		(doall (for [card (fetcher/select-cards set)]
+			(save-card 
+					(get card :name) 
+					(get card :id) 
+					(get card :color) 
+					(get card :set) 
+					(get card :rarity)
+					(get card :artist)))))))
 
 (defn populate-sets []
 	(println "Populating sets")

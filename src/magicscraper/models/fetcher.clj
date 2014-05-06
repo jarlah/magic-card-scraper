@@ -4,7 +4,7 @@
 ;; the basic stuff needed
 (def baseurl "http://gatherer.wizards.com/Pages/")
 (def searchurl "Search/Default.aspx?output=checklist&action=advanced&set=")
-(def query "|[\"Theros\"]|[\"Journey+into+Nyx\"]|[\"Born+of+the+Gods\"]")
+(def queryFormat "[\"%SET%\"]")
 
 ;; equivalent to jquery selectors
 (def nameSelector [:td.name :a.nameLink html/text])
@@ -16,8 +16,8 @@
 (def setDropdownSelector [(html/attr-ends :id "setAddText" :name "setAddText") :option html/text])
 
 (defn fetch-url "Fetches from baseurl" 
-	[query]
-	(html/html-resource (java.net.URL. (str baseurl query))))
+	[url]
+	(html/html-resource (java.net.URL. (str baseurl url))))
 
 (defn extract-value "Returns the first value in a vector from a html node selection" 
 	[node selector]
@@ -40,9 +40,13 @@
 	 :id 		(extract-id-hack cardItem)
 	 :artist 	(extract-value cardItem artistSelector)})
 
-(defn select-cards "Simpply fetches the search result and selects the card" 
-	[] 
-	(pmap extract-card (html/select (fetch-url (str searchurl query)) [:table.checklist :tr.cardItem])))
+(defn get-url-for-query [set]
+	(str searchurl (clojure.string/replace queryFormat #"%SET%" (clojure.string/replace set #"\s" "+"))))
 
 (defn select-sets [] 
 	(html/select (fetch-url "") setDropdownSelector))
+
+(defn select-cards "Simpply fetches the search result and selects the card" 
+	[set] 
+	(pmap extract-card (html/select (fetch-url (get-url-for-query set)) [:table.checklist :tr.cardItem])))
+
