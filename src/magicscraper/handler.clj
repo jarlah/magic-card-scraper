@@ -10,8 +10,7 @@
 
 (defn init []
   (println "magicscraper is starting")
-  (if-not (.exists (java.io.File. "./db.sq3"))
-    (db/create-tables)))
+  (db/init-database))
 
 (defn destroy []
   (println "magicscraper is shutting down"))

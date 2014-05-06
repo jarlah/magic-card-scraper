@@ -60,21 +60,26 @@
 
 (defn populate-cards []
 	(println "Populating cards")
-	(for [card (fetcher/select-cards)]
+	(doall (for [card (fetcher/select-cards)]
 		(save-card 
 			(get card :name) 
 			(get card :id) 
 			(get card :color) 
 			(get card :set) 
 			(get card :rarity)
-			(get card :artist))))
+			(get card :artist)))))
 
 (defn populate-sets []
 	(println "Populating sets")
-	(for [set (fetcher/select-sets)]
-		(save-set set "")))
+	(doall (for [set (fetcher/select-sets)]
+		(save-set set ""))))
 
-(defn create-tables []
-	(println "Database does not exist. Creating tables.")
+(defn populate-database []
 	(create-sets-table)
-	(create-cards-table))
+	(populate-sets)
+	(create-cards-table)
+	(populate-cards))
+
+(defn init-database []
+	(if-not (.exists (java.io.File. "./db.sq3"))
+		(populate-database)))
